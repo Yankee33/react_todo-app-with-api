@@ -55,9 +55,11 @@ export const TodoList: React.FC<TodoListProps> = ({
     }
 
     if (!trimmed) {
-      await onDelete(todo.id);
-      cancelEditing();
-
+      try {
+        await onDelete(todo.id);
+        cancelEditing();
+      } catch {
+      }
       return;
     }
 
@@ -97,6 +99,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                   <input
                     data-cy="TodoTitleField"
                     value={editingTitle}
+                    className="todo__title-field"
                     onChange={e => setEditingTitle(e.target.value)}
                     onBlur={() => saveEditing(todo)}
                     onKeyDown={e => {
