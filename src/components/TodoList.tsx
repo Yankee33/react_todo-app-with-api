@@ -48,18 +48,17 @@ export const TodoList: React.FC<TodoListProps> = ({
   const saveEditing = async (todo: Todo) => {
     const trimmed = editingTitle.trim();
 
-    if (trimmed === todo.title) {
-      cancelEditing();
+    if (!trimmed) {
+      try {
+        await onDelete(todo.id);
+      } catch {}
 
       return;
     }
 
-    if (!trimmed) {
-      try {
-        await onDelete(todo.id);
-        cancelEditing();
-      } catch {
-      }
+    if (trimmed === todo.title) {
+      cancelEditing();
+
       return;
     }
 
@@ -116,6 +115,7 @@ export const TodoList: React.FC<TodoListProps> = ({
                 ) : (
                   <span
                     data-cy="TodoTitle"
+                    className="todo__title"
                     onDoubleClick={() => startEditing(todo)}
                   >
                     {todo.title}
